@@ -1,7 +1,20 @@
 .login_toggleMode {
   cursor: pointer;
-  color: #0000ff;
+  color: rgb(91, 91, 255);
+  font-weight: 900;
+  padding-left: 10px;
 }
+
+.login_toggle {
+  font-weight: 550;
+  text-align: center;
+}
+
+.login_right {
+  text-align: right;
+  cursor: pointer;
+}
+
 .login_modal {
   text-align: center;
 }
@@ -23,5 +36,28 @@
 
 .login_title {
   font-size: 60px;
-  font-family: 'Homemade Apple', cursive;
+  font-family: "Homemade Apple", cursive;
+  text-shadow: 5px 4px 3px #808080;
+}
+
+.login_bar {
+  display: flex;
+  align-items: center;
+  opacity: 0.5;
+  margin-bottom: 10px;
+}
+
+.login_bar:before,
+.login_bar:after {
+  border-top: 1px solid;
+  content: "";
+  flex-grow: 1;
+}
+
+.login_bar:before {
+  margin-right: 1rem;
+}
+
+.login_bar:after {
+  margin-left: 1rem;
 }
