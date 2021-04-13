@@ -20,6 +20,9 @@
 }
 .login_reset {
   cursor: pointer;
+  text-align: center;
+  color: rgb(91, 91, 255);
+  opacity: 0.8;
 }
 .login_hiddenIcon {
   text-align: center;
