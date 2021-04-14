@@ -36,7 +36,9 @@ const App: React.FC = () => {
           <Feed />
         </div>
       ) : (
-        <Auth />
+        <div className={styles.app_auth}>
+          <Auth />
+        </div>
       )}
     </>
   );
