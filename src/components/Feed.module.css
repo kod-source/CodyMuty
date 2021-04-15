@@ -1,0 +1,15 @@
+.feed {
+    flex: 1;
+    overflow-y: scroll;
+  }
+  
+  .feed::-webkit-scrollbar {
+    display: none;
+  }
+
+  .feed_btn {
+    position: fixed;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+  }
