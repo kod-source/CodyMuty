@@ -47,7 +47,15 @@ const Feed: React.FC = () => {
       </button>
       <PostInput />
       {posts.map((post) => (
-        <h1>{post.text}</h1>
+        <Post
+          key={post.id}        
+          postId={post.id}
+          avatar={post.avatar}
+          image={post.image}
+          text={post.text}
+          timestamp={post.timestamp}
+          username={post.username}
+        />
       ))}
     </div>
   );
