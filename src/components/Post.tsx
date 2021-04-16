@@ -1,4 +1,4 @@
-import { Avatar, styled } from "@material-ui/core";
+import { Avatar, makeStyles, styled } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
@@ -25,7 +25,16 @@ interface COMMENTS {
   username: string;
 }
 
+const useStyles = makeStyles((theme) => ({
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+    marginRight: theme.spacing(1),
+  },
+}));
+
 const Post: React.FC<POSTS> = (props) => {
+  const classes = useStyles();
   const user = useSelector(selectUser);
   const [opendSend, setOpenSend] = useState(false);
   const [comment, setComment] = useState("");
@@ -33,28 +42,26 @@ const Post: React.FC<POSTS> = (props) => {
   const date = new Date();
 
   useEffect(() => {
-    const unSub = db
-      .collection("posts")
-      .doc(props.postId)
-      .collection("comments")
+    getDate();
+  }, []);
+
+  const getDate = () => {
+    db.collection("posts").doc(props.postId).collection("comments")
       .orderBy("timestamp", "desc")
-      .onSnapshot((snapshot) => {
+      .onSnapshot((snapshot) =>
         setComments(
           snapshot.docs.map((doc) => ({
             id: doc.id,
             avatar: doc.data().avatar,
+            image: doc.data().image,
             text: doc.data().text,
-            username: doc.data  ().username,
             timestamp: doc.data().timestamp,
+            username: doc.data().username,
           }))
-        );
-      });
-    return () => {
-      unSub();
-    };
-  }, [props.postId]);
+        )
+      );
+  };
 
-  console.log(comments);
   const newComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     db.collection("posts")
@@ -72,6 +79,12 @@ const Post: React.FC<POSTS> = (props) => {
     setComment("");
   };
 
+  const postDelete = () => {
+    if (props.username == user.displayName) {
+      alert("issyo")
+    }
+  }
+
   return (
     <div className={styles.post}>
       <div className={styles.post_avatar}>
@@ -84,6 +97,7 @@ const Post: React.FC<POSTS> = (props) => {
             <span className={styles.post_headerTime}>
               {new Date(props.timestamp?.toDate()).toLocaleString()}
             </span>
+            <span className={styles.post_span} onClick={postDelete}>︙</span>
           </h3>
           <p className={styles.post_tweet}>{props.text}</p>
         </div>
@@ -96,6 +110,14 @@ const Post: React.FC<POSTS> = (props) => {
         />
         {opendSend && (
           <>
+          {comments.map((comment) => (
+            <div className={styles.post_comment}>
+              <Avatar src={comment.avatar} className={classes.small} />
+              <span className={styles.post_commentUser}>@{comment.username}</span>
+              <span className={styles.post_commentText}>{comment.text}</span>
+              <span className={styles.post_headerTime}>{new Date(comment.timestamp.toDate()).toLocaleString()}</span>
+            </div>
+          ))}
             <form onSubmit={newComment}>
               <div className={styles.post_form}>
                 <input
