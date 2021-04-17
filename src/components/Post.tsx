@@ -194,6 +194,7 @@ const Post: React.FC<POSTS> = (props) => {
                         setChangeComment(e.target.value);
                       }}
                     />
+                    <p className={styles.post_time}>※投稿された日時も更新されます</p>
                     <Button
                       type="submit"
                       disabled={!changeComment}
@@ -260,7 +261,7 @@ const Post: React.FC<POSTS> = (props) => {
             <form onSubmit={newComment}>
               <div className={styles.post_form}>
                 <input
-                  className={styles.post_input}
+                  className={styles.post_inputcomment}
                   type="text"
                   placeholder="コメントを追加"
                   value={comment}
