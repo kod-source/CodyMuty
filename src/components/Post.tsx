@@ -1,4 +1,4 @@
-import { Avatar, makeStyles, Modal, styled } from "@material-ui/core";
+import { Avatar, Button, makeStyles, Modal, styled } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
@@ -6,7 +6,6 @@ import styles from "./Post.module.css";
 import MessageIcon from "@material-ui/icons/Message";
 import SendIcon from "@material-ui/icons/Send";
 import { db } from "../firebase";
-import firebase from "firebase/app";
 
 interface POSTS {
   postId: string;
@@ -51,11 +50,12 @@ const useStyles = makeStyles((theme) => ({
   modal: {
     outline: "none",
     position: "absolute",
-    width: 400,
+    width: 300,
+    height: 180,
     borderRadius: 10,
     backgroundColor: "white",
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(7),
+    textAlign: "center",
   },
 }));
 
@@ -63,7 +63,8 @@ const Post: React.FC<POSTS> = (props) => {
   const classes = useStyles();
   const user = useSelector(selectUser);
   const [opendSend, setOpenSend] = useState(false);
-  const [openEdit, setOpenEdit] = useState(true);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<COMMENTS[]>([]);
   const date = new Date();
@@ -100,7 +101,7 @@ const Post: React.FC<POSTS> = (props) => {
         avatar: user.photoUrl,
         text: comment,
         username: user.displayName,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        timestamp: date,
       })
       .catch((error) => {
         alert(error.message);
@@ -109,12 +110,18 @@ const Post: React.FC<POSTS> = (props) => {
   };
 
   const postDelete = () => {
-      alert("issyo");
+    db.collection("posts")
+      .doc(props.postId)
+      .delete()
+      .then(() => {})
+      .catch((error) => {
+        alert(error.message);
+      });
   };
 
   const postEdit = () => {
-    alert("編集")
-  }
+    alert("編集");
+  };
 
   return (
     <div className={styles.post}>
@@ -141,9 +148,35 @@ const Post: React.FC<POSTS> = (props) => {
                 openEdit ? styles.post_modal : styles.post_modalDisabled
               }
             >
-              <p className={styles.post_edit} onClick={postEdit} >編集</p>
-              <p onClick={postDelete}>削除</p>
+              <p className={styles.post_edit} onClick={postEdit}>
+                編集
+              </p>
+              <p onClick={() => setOpenDelete(true)}>削除</p>
             </div>
+            {openDelete && (
+              <Modal open={openDelete}>
+                <div style={getModalStyle(40, 40)} className={classes.modal}>
+                  <div className={styles.post_modalDelete}>
+                    投稿を削除しますか？
+                  </div>
+                  <p className={styles.post_modalDeleteFont}>
+                    この操作は取り消せません。この投稿のコメントも削除されます。
+                  </p>
+                  <Button
+                    className={styles.post_modalEditButton}
+                    onClick={() => setOpenDelete(false)}
+                  >
+                    キャンセル
+                  </Button>
+                  <Button
+                    className={styles.post_modalDeleteButton}
+                    onClick={postDelete}
+                  >
+                    削除
+                  </Button>
+                </div>
+              </Modal>
+            )}
           </h3>
           <p className={styles.post_tweet}>{props.text}</p>
         </div>

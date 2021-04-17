@@ -62,15 +62,15 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  modal: {
-    outline: "none",
-    position: "absolute",
-    width: 400,
-    borderRadius: 10,
-    backgroundColor: "white",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(7),
-  },
+    modal: {
+      outline: "none",
+      position: "absolute",
+      width: 400,
+      borderRadius: 10,
+      backgroundColor: "white",
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(7),
+    },
 }));
 
 const Auth: React.FC = () => {
