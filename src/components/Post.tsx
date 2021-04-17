@@ -1,4 +1,11 @@
-import { Avatar, Button, makeStyles, Modal, styled } from "@material-ui/core";
+import {
+  Avatar,
+  Button,
+  darken,
+  makeStyles,
+  Modal,
+  styled,
+} from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
@@ -57,15 +64,27 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     textAlign: "center",
   },
+  modalEdit: {
+    outline: "none",
+    position: "absolute",
+    width: 800,
+    height: 300,
+    borderRadius: 10,
+    backgroundColor: "white",
+    boxShadow: theme.shadows[5],
+    textAlign: "center",
+  },
 }));
 
 const Post: React.FC<POSTS> = (props) => {
   const classes = useStyles();
   const user = useSelector(selectUser);
   const [opendSend, setOpenSend] = useState(false);
+  const [openModal, setopenModal] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [comment, setComment] = useState("");
+  const [changeComment, setChangeComment] = useState("");
   const [comments, setComments] = useState<COMMENTS[]>([]);
   const date = new Date();
 
@@ -119,8 +138,14 @@ const Post: React.FC<POSTS> = (props) => {
       });
   };
 
-  const postEdit = () => {
-    alert("編集");
+  const postEdit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    db.collection("posts").doc(props.postId).update({
+      timestamp: date,
+      text: changeComment,
+    });
+    setChangeComment("");
+    setOpenEdit(false);
   };
 
   return (
@@ -138,21 +163,52 @@ const Post: React.FC<POSTS> = (props) => {
             {props.username == user.displayName && (
               <span
                 className={styles.post_span}
-                onClick={() => setOpenEdit(!openEdit)}
+                onClick={() => setopenModal(!openModal)}
               >
                 ︙
               </span>
             )}
             <div
               className={
-                openEdit ? styles.post_modal : styles.post_modalDisabled
+                openModal ? styles.post_modal : styles.post_modalDisabled
               }
             >
-              <p className={styles.post_edit} onClick={postEdit}>
+              <p className={styles.post_edit} onClick={() => setOpenEdit(true)}>
                 編集
               </p>
               <p onClick={() => setOpenDelete(true)}>削除</p>
             </div>
+            {openEdit && (
+              <Modal open={openEdit} onClose={() => setOpenEdit(false)}>
+                <form onSubmit={postEdit}>
+                  <div
+                    style={getModalStyle(40, 25)}
+                    className={classes.modalEdit}
+                  >
+                    <input
+                      className={styles.post_input}
+                      type="text"
+                      placeholder="投稿内容を変更します"
+                      value={changeComment}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setChangeComment(e.target.value);
+                      }}
+                    />
+                    <Button
+                      type="submit"
+                      disabled={!changeComment}
+                      className={
+                        changeComment
+                          ? styles.post_changeMessage
+                          : styles.post_changeDisableMessage
+                      }
+                    >
+                      変更
+                    </Button>
+                  </div>
+                </form>
+              </Modal>
+            )}
             {openDelete && (
               <Modal open={openDelete}>
                 <div style={getModalStyle(40, 40)} className={classes.modal}>
