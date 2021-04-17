@@ -32,8 +32,6 @@ interface MODAL {
 const getModalStyle = (x: number, y: number): MODAL => {
   const top = x;
   const left = y;
-  // const top = 60;
-  // const left = 36;
 
   return {
     top: `${top}%`,

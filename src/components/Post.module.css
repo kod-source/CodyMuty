@@ -1,90 +1,145 @@
 .post {
-    display: flex;
-    align-items: flex-start;
-    padding-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  padding-bottom: 10px;
+}
+.post_avatar {
+  padding: 20px;
+}
+.post_body {
+  flex: 1;
+  padding: 10px;
+}
+.post_header > h3 {
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+.post_headerUser {
+  font-weight: 600;
+  font-size: 18px;
+  color: white;
+  margin-right: 12px;
+}
+.post_headerTime {
+  font-size: 14px;
+  color: gray;
+}
+.post_tweet {
+  margin-bottom: 5px;
+  color: whitesmoke;
+  font-size: 20px;
+  padding: 0;
+  margin-top: 0;
+}
+.post_image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.post_image > img {
+  object-fit: contain;
+  border-radius: 20px;
+  max-height: 250px;
+}
+.post_commentIcon {
+  margin-top: 15px;
+  color: whitesmoke;
+  cursor: pointer;
+}
+.post_comment {
+  display: flex;
+  align-items: center;
+  word-break: break-all;
+  margin: 12px;
+}
+.post_commentUser {
+  font-weight: 600;
+  font-size: 16px;
+  color: white;
+  margin-right: 12px;
+}
+.post_commentText {
+  font-size: 15px;
+  color: whitesmoke;
+  margin-right: 10px;
+}
+.post_form {
+  margin: 40px;
+  position: relative;
+  display: flex;
+}
+.post_input {
+  padding: 10px;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+.post_button {
+  border: none;
+  color: whitesmoke;
+  background-color: transparent;
+  cursor: pointer;
+}
+.post_buttonDisable {
+  display: none;
+}
+.post_span {
+  color: white;
+  font-size: 20px;
+  padding: 5px;
+  margin-left: 900px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.post_modal {
+  display: inline-block;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  margin-left: 945px;
+  background-color: white;
+  border: 2px solid;
+  border-color: white;
+  text-align: center;
+}
+.post_modal p {
+  font-size: 13px;
+  margin: 0;
+  padding: 0 70px;
+  font-weight: bold;
+  cursor: pointer;
+  border: white solid 2px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  transition: .3s;
+}
+.post_span:hover {
+    background-color: gray;
+    color: skyblue;
+}
+.post_modal p:hover {
+     box-shadow: 0 5px 10px gray;
+     transform: translate(0, -5px);
+}
+@keyframes pulsation {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.9); }
+    100% { transform: scale(1.1); }
   }
-  .post_avatar {
-    padding: 20px;
-  }
-  .post_body {
-    flex: 1;
-    padding: 10px;
-  }
-  .post_header > h3 {
-    font-size: 15px;
-    margin-bottom: 5px;
-  }
-  .post_headerUser {
-    font-weight: 600;
-    font-size: 18px;
-    color: white;
-    margin-right: 12px;
-  }
-  .post_headerTime {
-    font-size: 14px;
-    color: gray;
-  }
-  .post_tweet  {
-    margin-bottom: 10px;
-    color: whitesmoke;
-    font-size: 20px;
-  }
-  .post_image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .post_image > img {
-    object-fit: contain;
-    border-radius: 20px;
-    max-height: 250px;
-  }
-  .post_commentIcon {
-    margin-top: 15px;
-    color: whitesmoke;
-    cursor: pointer;
-  }
-  .post_comment {
-    display: flex;
-    align-items: center;
-    word-break: break-all;
-    margin: 12px;
-  }
-  .post_commentUser {
-    font-weight: 600;
-    font-size: 16px;
-    color: white;
-    margin-right: 12px;
-  }
-  .post_commentText {
-    font-size: 15px;
-    color: whitesmoke;
-    margin-right: 10px;
-  }
-  .post_form {
-    margin: 40px;
-    position: relative;
-    display: flex;
-  }
-  .post_input {
-    padding: 10px;
-    outline: none;
-    border: none;
-    border-radius: 10px;
-    margin-right: 10px;
-  }
-  .post_button {
-    border: none;
-    color: whitesmoke;
-    background-color: transparent;
-    cursor: pointer;
-  }
-  .post_buttonDisable {
-    display: none;
-  }
-  .post_span {
-      color: white;
-      font-size: 20px;
-      padding-left: 900px;
-      cursor: pointer;
-  }
+.post_edit {
+  padding-bottom: 4px;
+}
+.post_modalDisabled {
+  display: inline-block;
+  margin: 0;
+  margin-left: 945px;
+  padding: 0 70px;
+  visibility: hidden;
+}
+
+.post_modalDisabled p {
+  font-size: 13px;
+  margin: 0;
+}

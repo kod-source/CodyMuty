@@ -1,4 +1,4 @@
-import { Avatar, makeStyles, styled } from "@material-ui/core";
+import { Avatar, makeStyles, Modal, styled } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
@@ -25,11 +25,37 @@ interface COMMENTS {
   username: string;
 }
 
+interface MODAL {
+  top: string;
+  left: string;
+  transform: string;
+}
+
+const getModalStyle = (x: number, y: number): MODAL => {
+  const top = x;
+  const left = y;
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `traslate(-${top}%, -${left}%)`,
+  };
+};
+
 const useStyles = makeStyles((theme) => ({
   small: {
     width: theme.spacing(3),
     height: theme.spacing(3),
     marginRight: theme.spacing(1),
+  },
+  modal: {
+    outline: "none",
+    position: "absolute",
+    width: 400,
+    borderRadius: 10,
+    backgroundColor: "white",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(7),
   },
 }));
 
@@ -37,6 +63,7 @@ const Post: React.FC<POSTS> = (props) => {
   const classes = useStyles();
   const user = useSelector(selectUser);
   const [opendSend, setOpenSend] = useState(false);
+  const [openEdit, setOpenEdit] = useState(true);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<COMMENTS[]>([]);
   const date = new Date();
@@ -46,7 +73,9 @@ const Post: React.FC<POSTS> = (props) => {
   }, []);
 
   const getDate = () => {
-    db.collection("posts").doc(props.postId).collection("comments")
+    db.collection("posts")
+      .doc(props.postId)
+      .collection("comments")
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) =>
         setComments(
@@ -80,9 +109,11 @@ const Post: React.FC<POSTS> = (props) => {
   };
 
   const postDelete = () => {
-    if (props.username == user.displayName) {
-      alert("issyo")
-    }
+      alert("issyo");
+  };
+
+  const postEdit = () => {
+    alert("編集")
   }
 
   return (
@@ -97,7 +128,22 @@ const Post: React.FC<POSTS> = (props) => {
             <span className={styles.post_headerTime}>
               {new Date(props.timestamp?.toDate()).toLocaleString()}
             </span>
-            <span className={styles.post_span} onClick={postDelete}>︙</span>
+            {props.username == user.displayName && (
+              <span
+                className={styles.post_span}
+                onClick={() => setOpenEdit(!openEdit)}
+              >
+                ︙
+              </span>
+            )}
+            <div
+              className={
+                openEdit ? styles.post_modal : styles.post_modalDisabled
+              }
+            >
+              <p className={styles.post_edit} onClick={postEdit} >編集</p>
+              <p onClick={postDelete}>削除</p>
+            </div>
           </h3>
           <p className={styles.post_tweet}>{props.text}</p>
         </div>
@@ -110,14 +156,18 @@ const Post: React.FC<POSTS> = (props) => {
         />
         {opendSend && (
           <>
-          {comments.map((comment) => (
-            <div className={styles.post_comment}>
-              <Avatar src={comment.avatar} className={classes.small} />
-              <span className={styles.post_commentUser}>@{comment.username}</span>
-              <span className={styles.post_commentText}>{comment.text}</span>
-              <span className={styles.post_headerTime}>{new Date(comment.timestamp.toDate()).toLocaleString()}</span>
-            </div>
-          ))}
+            {comments.map((comment) => (
+              <div className={styles.post_comment}>
+                <Avatar src={comment.avatar} className={classes.small} />
+                <span className={styles.post_commentUser}>
+                  @{comment.username}
+                </span>
+                <span className={styles.post_commentText}>{comment.text}</span>
+                <span className={styles.post_headerTime}>
+                  {new Date(comment.timestamp.toDate()).toLocaleString()}
+                </span>
+              </div>
+            ))}
             <form onSubmit={newComment}>
               <div className={styles.post_form}>
                 <input
