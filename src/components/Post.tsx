@@ -10,6 +10,7 @@ import { selectUser } from "../features/userSlice";
 import styles from "./Post.module.css";
 import MessageIcon from "@material-ui/icons/Message";
 import SendIcon from "@material-ui/icons/Send";
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import { db } from "../firebase";
 
 interface POSTS {
@@ -19,6 +20,7 @@ interface POSTS {
   text: string;
   timestamp: any;
   username: string;
+  likeCount: number;
 }
 
 interface COMMENTS {

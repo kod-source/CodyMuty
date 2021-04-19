@@ -3,6 +3,7 @@ import styles from "./Feed.module.css";
 import { auth, db } from "../firebase";
 import PostInput from "./PostInput";
 import Post from "./Post";
+import Header from "./Header/Header";
 
 const Feed: React.FC = () => {
   const [posts, setPosts] = useState([
@@ -13,6 +14,7 @@ const Feed: React.FC = () => {
       text: "",
       timestamp: null,
       username: "",
+      likeCount: 0,
     },
   ]);
 
@@ -32,6 +34,7 @@ const Feed: React.FC = () => {
             text: doc.data().text,
             timestamp: doc.data().timestamp,
             username: doc.data().username,
+            likeCount: doc.data().likeCount,
           }))
         )
       );
@@ -39,28 +42,26 @@ const Feed: React.FC = () => {
 
   return (
     <div className={styles.feed}>
-      <button
-        className={styles.feed_btn}
-        onClick={async () => await auth.signOut()}
-      >
-        ログアウト
-      </button>
-      <PostInput />
-      {posts[0]?.id && (
-        <>
-          {posts.map((post) => (
-            <Post
-              key={post.id}
-              postId={post.id}
-              avatar={post.avatar}
-              image={post.image}
-              text={post.text}
-              timestamp={post.timestamp}
-              username={post.username}
-            />
-          ))}
-        </>
-      )}
+      <Header />
+      <div className={styles.feedMain}>
+        <PostInput />
+        {posts[0]?.id && (
+          <>
+            {posts.map((post) => (
+              <Post
+                key={post.id}
+                postId={post.id}
+                avatar={post.avatar}
+                image={post.image}
+                text={post.text}
+                timestamp={post.timestamp}
+                username={post.username}
+                likeCount={post.likeCount}
+              />
+            ))}
+          </>
+        )}
+      </div>
     </div>
   );
 };

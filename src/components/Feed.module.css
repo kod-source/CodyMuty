@@ -13,3 +13,7 @@
     right: 0;
     cursor: pointer;
   }
+
+  .feedMain {
+    padding: 96px 0;
+  }
