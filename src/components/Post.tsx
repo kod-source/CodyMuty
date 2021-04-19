@@ -1,10 +1,8 @@
 import {
   Avatar,
   Button,
-  darken,
   makeStyles,
   Modal,
-  styled,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -261,6 +259,7 @@ const Post: React.FC<POSTS> = (props) => {
             <form onSubmit={newComment}>
               <div className={styles.post_form}>
                 <input
+                  disabled={user.displayName === "guest"}
                   className={styles.post_inputcomment}
                   type="text"
                   placeholder="コメントを追加"

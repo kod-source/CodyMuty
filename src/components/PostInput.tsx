@@ -1,4 +1,4 @@
-import { Avatar, Button, IconButton, TextField } from "@material-ui/core";
+import { Avatar, Button, IconButton } from "@material-ui/core";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
@@ -7,7 +7,7 @@ import styles from "./PostInput.module.css";
 import firebase from "firebase/app";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 
-const PostInput: React.FC = (props) => {
+const PostInput: React.FC = () => {
   const user = useSelector(selectUser);
   const [postImage, setPostImage] = useState<File | null>(null);
   const [postMessage, setPostMessage] = useState("");
@@ -83,6 +83,7 @@ const PostInput: React.FC = (props) => {
             }}
           />
           <input
+            disabled={user.displayName === "guest"}
             className={styles.post_input}
             type="text"
             placeholder="今日は何がありましたか？"
@@ -100,6 +101,7 @@ const PostInput: React.FC = (props) => {
                 }
               />
               <input
+                disabled={user.displayName === "guest"}
                 className={styles.post_hiddenIcon}
                 type="file"
                 onChange={changeAvatarImage}
