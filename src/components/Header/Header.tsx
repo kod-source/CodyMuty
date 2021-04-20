@@ -8,6 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import { auth } from "../../firebase";
 import HeaderDrawer from "./HeaderDrawer";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,17 +19,21 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(2),
     },
     menuBar: {
-        backgroundColor: "#fff",
-        color: "#444",
+      backgroundColor: "#fff",
+      color: "#444",
     },
     title: {
       flexGrow: 1,
     },
     toolBar: {
-        margin: "0 auto",
-        maxWidth: 1250,
-        width: "100%",
+      margin: "0 auto",
+      maxWidth: 1250,
+      width: "100%",
     },
+    font: {
+        color: "black",
+        textDecoration: "none"
+    }
   })
 );
 
@@ -36,17 +41,20 @@ const Header: React.FC = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
-  const toggleDawer = useCallback((event: React.KeyboardEvent | React.MouseEvent) => {
-    if (
+  const toggleDawer = useCallback(
+    (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
         event.type === "keydown" &&
         ((event as React.KeyboardEvent).key === "Tab" ||
           (event as React.KeyboardEvent).key === "Shift")
       ) {
         return;
       }
-  
+
       setOpen(!open);
-  }, [setOpen, open]);
+    },
+    [setOpen, open]
+  );
 
   return (
     <div className={classes.root}>
@@ -57,13 +65,12 @@ const Header: React.FC = () => {
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
-            // onClick={() => setOpen(true)}
             onClick={(event) => toggleDawer(event)}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            CodyMuty
+            <Link to="/" className={classes.font}>CodyMuty</Link>
           </Typography>
           <Button color="inherit" onClick={async () => await auth.signOut()}>
             ログアウト
