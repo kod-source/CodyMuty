@@ -1,17 +1,15 @@
-import React, { useState } from "react";
-import clsx from "clsx";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
-import { IconButton } from "@material-ui/core";
-import { ExitToApp, Search } from "@material-ui/icons";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import PersonIcon from "@material-ui/icons/Person";
+import HomeIcon from "@material-ui/icons/Home";
+import { auth } from "../../firebase";
+import { Link } from "react-router-dom";
 
 interface PROPS {
   open: boolean;
@@ -24,6 +22,16 @@ const useStyles = makeStyles({
   },
   fullList: {
     width: 200,
+    paddingTop: 20,
+  },
+  link: {
+    color: "black",
+    textDecoration: "none",
+    fontSize: 16,
+    display: "flex",
+  },
+  backColor: {
+    backgroundColor: "#e1e1e1",
   },
 });
 
@@ -39,22 +47,35 @@ const HeaderDrawer: React.FC<PROPS> = (props) => {
         onClose={(e) => props.onClose(e)}
         ModalProps={{ keepMounted: true }}
       >
-        <div>
-          <div className={classes.fullList}>
-            <IconButton>
-              <Search />
-            </IconButton>
-          </div>
-        </div>
+        <List className={classes.fullList}>
+          <ListItem button key="home" onClick={(e) => props.onClose(e)}>
+            <Link to="/" className={classes.link}>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary={"ホーム"} />
+            </Link>
+          </ListItem>
+          <ListItem button key="profile" onClick={(e) => props.onClose(e)}>
+            <Link to="/Profile/Profile" className={classes.link}>
+              <ListItemIcon>
+                <PersonIcon />
+              </ListItemIcon>
+              <ListItemText primary="プロフィール" />
+            </Link>
+          </ListItem>
+          <ListItem
+            button
+            key="logout"
+            onClick={async () => await auth.signOut()}
+          >
+            <ListItemIcon>
+              <ExitToAppIcon />
+            </ListItemIcon>
+            <ListItemText primary={"ログアウト"} />
+          </ListItem>
+        </List>
       </Drawer>
-      <List>
-        <ListItem button key="logout">
-          <ListItemIcon>
-            <ExitToApp />
-          </ListItemIcon>
-          <ListItemText primary={"ログアウト"} />
-        </ListItem>
-      </List>
     </nav>
   );
 };

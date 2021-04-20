@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(2),
     },
     menuBar: {
-      backgroundColor: "#fff",
+      backgroundColor: "#e1e1e1",
       color: "#444",
     },
     title: {

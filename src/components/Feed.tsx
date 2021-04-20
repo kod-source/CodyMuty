@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import styles from "./Feed.module.css";
-import { auth, db } from "../firebase";
+import { db } from "../firebase";
 import PostInput from "./PostInput";
 import Post from "./Post";
 import Header from "./Header/Header";
@@ -46,10 +46,6 @@ const Feed: React.FC = () => {
     <BrowserRouter>
       <div className={styles.feed}>
         <Header />
-        <nav>
-         
-          <Link to="/Profile/Profile">プロフィール</Link>
-        </nav>
         <Switch>
           <Route path="/" exact>
             <div className={styles.feedMain}>

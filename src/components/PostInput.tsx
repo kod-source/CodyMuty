@@ -80,9 +80,6 @@ const PostInput: React.FC = () => {
           <Avatar
             className={styles.post_avatar}
             src={user.photoUrl}
-            onClick={async () => {
-              await auth.signOut();
-            }}
           />
           <input
             disabled={user.displayName === "guest"}
