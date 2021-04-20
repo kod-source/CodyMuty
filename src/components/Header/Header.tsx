@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import { auth } from "../../firebase";
+import HeaderDrawer from "./HeaderDrawer";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,6 +34,19 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Header: React.FC = () => {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+
+  const toggleDawer = useCallback((event: React.KeyboardEvent | React.MouseEvent) => {
+    if (
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+  
+      setOpen(!open);
+  }, [setOpen, open]);
 
   return (
     <div className={classes.root}>
@@ -43,6 +57,8 @@ const Header: React.FC = () => {
             className={classes.menuButton}
             color="inherit"
             aria-label="menu"
+            // onClick={() => setOpen(true)}
+            onClick={(event) => toggleDawer(event)}
           >
             <MenuIcon />
           </IconButton>
@@ -54,6 +70,7 @@ const Header: React.FC = () => {
           </Button>
         </Toolbar>
       </AppBar>
+      <HeaderDrawer open={open} onClose={toggleDawer} />
     </div>
   );
 };
