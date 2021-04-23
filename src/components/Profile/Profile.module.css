@@ -1,0 +1,46 @@
+.profile {
+    margin: 0 auto;
+    padding: 1rem;
+    height: auto;
+    width: calc(100% - 2rem);
+}
+
+.profile_container {
+    text-align: center;
+}
+
+.profile_title {
+    margin: 0;
+    padding: 0;
+    margin-top: 60px;
+    font-size: 35px;
+    font-weight: bold;
+    color: white;
+}
+
+.profile_avatar {
+    width: 500px;
+    height: 500px;
+}
+
+.profile_font {
+    color: rgb(66, 202, 255);
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.profile_underbar {
+    opacity: 0.1;
+    padding: 0;
+    margin: 0;
+}
+
+.profile_section {
+    margin: 0 auto;
+    max-width: 500px;
+    padding: 1rem;
+    height: auto;
+    width: calc(100% - 2rem);
+}
