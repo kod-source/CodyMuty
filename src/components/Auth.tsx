@@ -120,7 +120,7 @@ const Auth: React.FC = () => {
       alert("メールアドレスまたはパスワードが正しくありません");
     }
   };
-
+  
   const signUpEmail = async () => {
     try {
       const authUser = await auth.createUserWithEmailAndPassword(
