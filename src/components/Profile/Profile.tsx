@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Profile.module.css";
 import { useSelector } from "react-redux";
-import {
-  Avatar,
-  Button,
-  makeStyles,
-  TextField,
-} from "@material-ui/core";
+import { Avatar, Button, makeStyles, TextField } from "@material-ui/core";
 import { selectUser } from "../../features/userSlice";
 import { db } from "../../firebase";
 
@@ -30,23 +25,34 @@ const useStyles = makeStyles((theme) => ({
   },
   multilineColor: {
     color: "white",
+    "&$disabled": {
+      color: "white",
+    },
   },
   label: {
-    color: "white",
+    color: "skyblue",
+    "&$disabled": {
+      color: "white",
+    },
+  },
+  underline: {
+    borderBottom: `4px solid skyblue`,
+    "&$disabled": {
+      borderBottom: `1px solid white`,
+    },
+    "&:after": {
+      borderBottom: `2px solid skyblue`,
+    },
   },
   focusedLabel: {},
-  underline: {
-    borderBottom: `1px solid white`,
-  },
-  "&:after": {
-    borderBottom: `4px solid blue`,
-  },
+  disabled: {},
 }));
 
 const Profile: React.FC = () => {
   const classes = useStyles();
   const user = useSelector(selectUser);
   const [selfIntroduction, setSelfIntroduction] = useState("");
+  const [openProfileEdit, setOpenProfileEdit] = useState(false);
 
   const profileCollection = db.collection("profile");
 
@@ -80,6 +86,7 @@ const Profile: React.FC = () => {
       .catch((error) => {
         alert(error.message);
       });
+    setOpenProfileEdit(false);
   };
 
   return (
@@ -96,16 +103,20 @@ const Profile: React.FC = () => {
           InputLabelProps={{
             classes: {
               root: classes.label,
+              disabled: classes.disabled,
               focused: classes.focusedLabel,
             },
           }}
           InputProps={{
             classes: {
               root: classes.underline,
+              disabled: classes.disabled,
+              focused: classes.focusedLabel,
             },
             className: classes.multilineColor,
           }}
           className={classes.container}
+          disabled
           fullWidth={true}
           label={"ユーザー名"}
           multiline={false}
@@ -117,12 +128,15 @@ const Profile: React.FC = () => {
           InputLabelProps={{
             classes: {
               root: classes.label,
+              disabled: classes.disabled,
               focused: classes.focusedLabel,
             },
           }}
           InputProps={{
             classes: {
               root: classes.underline,
+              disabled: classes.disabled,
+              focused: classes.focusedLabel,
             },
             className: classes.multilineColor,
           }}
@@ -134,13 +148,21 @@ const Profile: React.FC = () => {
             setSelfIntroduction(e.target.value);
           }}
           rows={8}
+          disabled={openProfileEdit === false}
           value={selfIntroduction}
           type={"text"}
         />
       </div>
       <div className="module-spacer--medium" />
       <div>
-        <Button onClick={addProfileDate}>編集する</Button>
+        {/* <Button onClick={addProfileDate}>編集する</Button> */}
+        <Button
+          onClick={() => {
+            openProfileEdit ? addProfileDate() : setOpenProfileEdit(true);
+          }}
+        >
+          {openProfileEdit ? "保存" : "編集する"}
+        </Button>
       </div>
     </section>
   );
