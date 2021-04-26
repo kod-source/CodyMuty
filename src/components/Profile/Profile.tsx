@@ -95,7 +95,6 @@ const Profile: React.FC = () => {
         <h2 className={styles.profile_title}>マイページ</h2>
         <hr className={styles.profile_underbar} />
         <Avatar src={user.photoUrl} className={classes.small} />
-        {/* <p className={styles.profile_font}>プロフィール写真の変更</p> */}
         <hr className={styles.profile_underbar} />
       </div>
       <div className={styles.profile_section}>
@@ -147,6 +146,7 @@ const Profile: React.FC = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setSelfIntroduction(e.target.value);
           }}
+          autoFocus={false}
           rows={8}
           disabled={openProfileEdit === false}
           value={selfIntroduction}
@@ -154,15 +154,18 @@ const Profile: React.FC = () => {
         />
       </div>
       <div className="module-spacer--medium" />
-      <div>
-        {/* <Button onClick={addProfileDate}>編集する</Button> */}
-        <Button
+      <div className={styles.profile_btn}>
+        <button
+            className={
+              openProfileEdit ? styles.profile_btnSave : styles.profile_btnEdit
+            }
           onClick={() => {
             openProfileEdit ? addProfileDate() : setOpenProfileEdit(true);
           }}
+          disabled={user.displayName === "guest" && openProfileEdit === true}
         >
-          {openProfileEdit ? "保存" : "編集する"}
-        </Button>
+          {openProfileEdit ? "保存" : "プロフィールを編集"}
+        </button>
       </div>
     </section>
   );
