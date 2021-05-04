@@ -1,18 +1,15 @@
-import {
-  Avatar,
-  Button,
-  makeStyles,
-  Modal,
-} from "@material-ui/core";
+import { Avatar, Button, makeStyles, Modal } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
 import styles from "./Post.module.css";
 import MessageIcon from "@material-ui/icons/Message";
 import SendIcon from "@material-ui/icons/Send";
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { db } from "../firebase";
-
+import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import { preProcessFile } from "typescript";
+// import {push} from "conected-react-router";
 interface POSTS {
   postId: string;
   avatar: string;
@@ -20,7 +17,7 @@ interface POSTS {
   text: string;
   timestamp: any;
   username: string;
-  likeCount: number;
+  userid: string;
 }
 
 interface COMMENTS {
@@ -29,6 +26,7 @@ interface COMMENTS {
   text: string;
   timestamp: any;
   username: string;
+  userid: string;
 }
 
 interface MODAL {
@@ -106,6 +104,7 @@ const Post: React.FC<POSTS> = (props) => {
             text: doc.data().text,
             timestamp: doc.data().timestamp,
             username: doc.data().username,
+            userid: doc.data().userid,
           }))
         )
       );
@@ -121,6 +120,7 @@ const Post: React.FC<POSTS> = (props) => {
         text: comment,
         username: user.displayName,
         timestamp: date,
+        userid: user.uid,
       })
       .catch((error) => {
         alert(error.message);
@@ -151,7 +151,9 @@ const Post: React.FC<POSTS> = (props) => {
   return (
     <div className={styles.post}>
       <div className={styles.post_avatar}>
-        <Avatar src={props.avatar} />
+        <Link to={"Profile/Profile/" + props.userid}>
+          <Avatar src={props.avatar} />
+        </Link>
       </div>
       <div className={styles.post_body}>
         <div>
@@ -194,7 +196,9 @@ const Post: React.FC<POSTS> = (props) => {
                         setChangeComment(e.target.value);
                       }}
                     />
-                    <p className={styles.post_time}>※投稿された日時も更新されます</p>
+                    <p className={styles.post_time}>
+                      ※投稿された日時も更新されます
+                    </p>
                     <Button
                       type="submit"
                       disabled={!changeComment}
@@ -248,7 +252,9 @@ const Post: React.FC<POSTS> = (props) => {
           <>
             {comments.map((comment) => (
               <div className={styles.post_comment}>
-                <Avatar src={comment.avatar} className={classes.small} />
+                <Link to={"Profile/Profile/" + comment.userid}>
+                  <Avatar src={comment.avatar} className={classes.small} />
+                </Link>
                 <span className={styles.post_commentUser}>
                   @{comment.username}
                 </span>

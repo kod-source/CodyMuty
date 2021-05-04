@@ -50,7 +50,7 @@ const PostInput: React.FC = () => {
                 text: postMessage,
                 username: user.displayName,
                 timestamp: date,
-                likeCount: 0,
+                userid: user.uid,
               });
             });
         }
@@ -63,7 +63,7 @@ const PostInput: React.FC = () => {
           text: postMessage,
           username: user.displayName,
           timestamp: date,
-          likeCount: 0,
+          userid: user.uid
         })
         .catch((error) => {
           alert(error.message);

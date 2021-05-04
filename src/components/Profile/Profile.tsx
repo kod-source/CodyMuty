@@ -51,27 +51,51 @@ const useStyles = makeStyles((theme) => ({
 const Profile: React.FC = () => {
   const classes = useStyles();
   const user = useSelector(selectUser);
+  const [avatar, setAvatar] = useState("");
+  const [username, setUsername] = useState("");
   const [selfIntroduction, setSelfIntroduction] = useState("");
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
+
+  let urlId = window.location.pathname.split("/Profile/Profile")[1];
+
+  if (urlId !== "") {
+    urlId = urlId.split("/")[1];
+  }
 
   const profileCollection = db.collection("profile");
 
   const id = user.uid;
 
   useEffect(() => {
-    profileCollection
-      .doc(id)
-      .get()
-      .then((snapshot) => {
-        if (snapshot.exists) {
-          const date: any = snapshot.data();
-          setSelfIntroduction(date.text);
-        }
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
-  }, [id]);
+    if (urlId === "") {
+      profileCollection
+        .doc(id)
+        .get()
+        .then((snapshot) => {
+          if (snapshot.exists) {
+            const data: any = snapshot.data();
+            setUsername(data.username);
+            setSelfIntroduction(data.text);
+            setAvatar(data.avatar);
+          }
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    } else {
+      profileCollection
+        .doc(urlId)
+        .get()
+        .then((snapshot) => {
+          if (snapshot.exists) {
+            const dataProfile: any = snapshot.data();
+            setUsername(dataProfile.username);
+            setSelfIntroduction(dataProfile.text);
+            setAvatar(dataProfile.avatar);
+          }
+        });
+    }
+  }, [urlId]);
 
   const addProfileDate = async () => {
     const date: Date = {
@@ -94,7 +118,7 @@ const Profile: React.FC = () => {
       <div className={styles.profile_container}>
         <h2 className={styles.profile_title}>マイページ</h2>
         <hr className={styles.profile_underbar} />
-        <Avatar src={user.photoUrl} className={classes.small} />
+        <Avatar src={avatar} className={classes.small} />
         <hr className={styles.profile_underbar} />
       </div>
       <div className={styles.profile_section}>
@@ -120,7 +144,7 @@ const Profile: React.FC = () => {
           label={"ユーザー名"}
           multiline={false}
           required={true}
-          value={user.displayName}
+          value={username}
           type={"text"}
         />
         <TextField
@@ -154,19 +178,36 @@ const Profile: React.FC = () => {
         />
       </div>
       <div className="module-spacer--medium" />
-      <div className={styles.profile_btn}>
-        <button
+      {urlId === "" && (
+        <div className={styles.profile_btn}>
+          <button
             className={
               openProfileEdit ? styles.profile_btnSave : styles.profile_btnEdit
             }
-          onClick={() => {
-            openProfileEdit ? addProfileDate() : setOpenProfileEdit(true);
-          }}
-          disabled={user.displayName === "guest" && openProfileEdit === true}
-        >
-          {openProfileEdit ? "保存" : "プロフィールを編集"}
-        </button>
-      </div>
+            onClick={() => {
+              openProfileEdit ? addProfileDate() : setOpenProfileEdit(true);
+            }}
+            disabled={user.displayName === "guest" && openProfileEdit === true}
+          >
+            {openProfileEdit ? "保存" : "プロフィールを編集"}
+          </button>
+        </div>
+      )}
+      {user.uid === urlId && (
+        <div className={styles.profile_btn}>
+          <button
+            className={
+              openProfileEdit ? styles.profile_btnSave : styles.profile_btnEdit
+            }
+            onClick={() => {
+              openProfileEdit ? addProfileDate() : setOpenProfileEdit(true);
+            }}
+            disabled={user.displayName === "guest" && openProfileEdit === true}
+          >
+            {openProfileEdit ? "保存" : "プロフィールを編集"}
+          </button>
+        </div>
+      )}
     </section>
   );
 };

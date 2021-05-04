@@ -16,7 +16,7 @@ const Feed: React.FC = () => {
       text: "",
       timestamp: null,
       username: "",
-      likeCount: 0,
+      userid: "",
     },
   ]);
 
@@ -36,7 +36,7 @@ const Feed: React.FC = () => {
             text: doc.data().text,
             timestamp: doc.data().timestamp,
             username: doc.data().username,
-            likeCount: doc.data().likeCount,
+            userid: doc.data().userid,
           }))
         )
       );
@@ -61,14 +61,14 @@ const Feed: React.FC = () => {
                       text={post.text}
                       timestamp={post.timestamp}
                       username={post.username}
-                      likeCount={post.likeCount}
+                      userid={post.userid}
                     />
                   ))}
                 </>
               )}
             </div>
           </Route>
-          <Route path="/Profile/Profile">
+          <Route path="/Profile/Profile(/:id)?">
             <Profile />
           </Route>
         </Switch>
