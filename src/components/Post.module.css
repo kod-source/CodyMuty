@@ -6,6 +6,10 @@
 .post_avatar {
   padding: 20px;
 }
+.post_avatar:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
 .post_body {
   flex: 1;
   padding: 10px;

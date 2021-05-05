@@ -51,6 +51,10 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(3),
     height: theme.spacing(3),
     marginRight: theme.spacing(1),
+    "&:hover": {
+      opacity: 0.7,
+      cursor: "pointer",
+    },
   },
   modal: {
     outline: "none",

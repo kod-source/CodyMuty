@@ -6,6 +6,7 @@ import { auth, db, storage } from "../firebase";
 import styles from "./PostInput.module.css";
 import firebase from "firebase/app";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
+import { Link } from "react-router-dom";
 
 const PostInput: React.FC = () => {
   const user = useSelector(selectUser);
@@ -63,7 +64,7 @@ const PostInput: React.FC = () => {
           text: postMessage,
           username: user.displayName,
           timestamp: date,
-          userid: user.uid
+          userid: user.uid,
         })
         .catch((error) => {
           alert(error.message);
@@ -77,10 +78,9 @@ const PostInput: React.FC = () => {
     <>
       <form onSubmit={sendPost}>
         <div className={styles.post_form}>
-          <Avatar
-            className={styles.post_avatar}
-            src={user.photoUrl}
-          />
+          <Link to={"Profile/Profile"}>
+            <Avatar className={styles.post_avatar} src={user.photoUrl} />
+          </Link>
           <input
             disabled={user.displayName === "guest"}
             className={styles.post_input}
